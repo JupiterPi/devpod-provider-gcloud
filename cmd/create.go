@@ -85,6 +85,10 @@ func buildInstance(options *options.Options) (*computepb.Instance, error) {
 	}
 
 	// generate instance object
+	disk_type := "pd-balanced"
+	if strings.Contains(options.MachineType, "n4") {
+		disk_type = "hyperdisk-balanced"
+	}
 	instance := &computepb.Instance{
 		Scheduling: &computepb.Scheduling{
 			AutomaticRestart:  ptr.Ptr(true),
@@ -106,7 +110,7 @@ func buildInstance(options *options.Options) (*computepb.Instance, error) {
 				DeviceName: ptr.Ptr(options.MachineID),
 				InitializeParams: &computepb.AttachedDiskInitializeParams{
 					DiskSizeGb:  ptr.Ptr(int64(diskSize)),
-					DiskType:    ptr.Ptr(fmt.Sprintf("projects/%s/zones/%s/diskTypes/pd-balanced", options.Project, options.Zone)),
+					DiskType:    ptr.Ptr(fmt.Sprintf("projects/%s/zones/%s/diskTypes/%s", options.Project, options.Zone, disk_type)),
 					SourceImage: ptr.Ptr(options.DiskImage),
 				},
 			},

@@ -140,6 +140,12 @@ options:
       - g2-standard-16
       - a2-highgpu-1g
       - a2-highgpu-2g
+      - n4-standard-2
+      - n4-standard-4
+      - n4-standard-8
+      - n4-standard-16
+      - n4-highcpu-8
+      - n4-highcpu-16
   INACTIVITY_TIMEOUT:
     description: If defined, will automatically stop the VM after the inactivity period.
     default: 5m
