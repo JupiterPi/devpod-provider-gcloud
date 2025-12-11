@@ -18,10 +18,15 @@ var checksumMap = map[string]string{
 }
 
 func main() {
-	if len(os.Args) != 2 {
-		fmt.Fprintln(os.Stderr, "Expected version as argument")
+	if len(os.Args) < 2 {
+		fmt.Fprintln(os.Stderr, "Expected version arguments")
 		os.Exit(1)
 		return
+	}
+
+	github_repo := "loft-sh/devpod-provider-gcloud"
+	if len(os.Args) >= 3 {
+		github_repo = os.Args[2]
 	}
 
 	content, err := os.ReadFile("./hack/provider/provider.yaml")
@@ -30,6 +35,7 @@ func main() {
 	}
 
 	replaced := strings.Replace(string(content), "##VERSION##", os.Args[1], -1)
+	replaced = strings.Replace(replaced, "##REPO##", github_repo, -1)
 	for k, v := range checksumMap {
 		checksum, err := File(k)
 		if err != nil {
